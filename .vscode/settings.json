@@ -1,0 +1,32 @@
+{
+    // C/C++ Project Settings for yolo-cls
+    // These settings ensure a consistent development environment for all contributors.
+
+    // File Formatting & Encoding
+    "files.eol": "\n",
+    "files.encoding": "utf8",
+    "files.associations": {
+        "iostream": "cpp",
+        "ostream": "cpp"
+    },
+
+    // Editor & Code Style
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+
+    // Language Tooling (Clang)
+    // Use the .clang-format file located in the root of the repository.
+    // By omitting clang-format.executable and clangd.path, we allow VS Code
+    // to find the tools on the system's PATH, which is portable across operating systems.
+    "clang-format.style": "file",
+    "clangd.arguments": [
+        "--pretty",
+        "--background-index"
+    ],
+    
+    // Spell Checking
+    // Project contains English language comments/strings.
+    "cSpell.language": "en-US",
+    "cSpell.maxNumberOfProblems": 1000,
+}

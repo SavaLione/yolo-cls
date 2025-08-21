@@ -1,0 +1,15 @@
+{
+    "recommendations": [
+        // General
+        "streetsidesoftware.code-spell-checker",
+        "shd101wyy.markdown-preview-enhanced",
+
+        // C, C++ & Build System
+        "llvm-vs-code-extensions.vscode-clangd",
+        "xaver.clang-format",
+        "josetr.cmake-language-support-vscode",
+
+        // Unix
+        "plorefice.devicetree"
+    ]
+}
