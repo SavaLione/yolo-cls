@@ -1,8 +1,8 @@
 ---
 name: Feature Request
-description: Suggest an idea for this project
+about: Template Feature Request
 title: "[Feature]: "
-labels: ["enhancement"]
+labels: enhancement
 assignees: ''
 
 ---

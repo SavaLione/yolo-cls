@@ -1,8 +1,8 @@
 ---
 name: Bug Report
-description: Create a report to help us improve
+about: Template Bug Report
 title: "[Bug]: "
-labels: ["bug"]
+labels: bug
 assignees: ''
 
 ---
