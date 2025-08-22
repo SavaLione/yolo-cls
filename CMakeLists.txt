@@ -74,12 +74,6 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
     ONNXRuntime::ONNXRuntime
 )
 
-# Compile definitions
-target_compile_definitions(${PROJECT_NAME} PRIVATE
-    $<$<CONFIG:Release>:-DNDEBUG>
-    $<$<CONFIG:MinSizeRel>:-DNDEBUG>
-)
-
 # Configuration file generation
 configure_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/src/config.h.in"
