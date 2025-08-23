@@ -52,7 +52,7 @@ endif()
 
 # Dependencies
 find_package(OpenCV REQUIRED COMPONENTS core imgcodecs imgproc dnn)
-find_package(ONNXRuntime REQUIRED) 
+find_package(ONNXRuntime REQUIRED)
 
 # Sources and executable definition
 set(YOLOCLS_SRC
@@ -113,6 +113,9 @@ get_filename_component(ONNXRUNTIME_LIB_DIR ${ONNXRUNTIME_LIB_LOCATION} DIRECTORY
 install(DIRECTORY ${ONNXRUNTIME_LIB_DIR}/ DESTINATION ${CMAKE_INSTALL_LIBDIR}
     FILES_MATCHING
         PATTERN "libonnxruntime.so*"
+        PATTERN "libonnxruntime_providers_shared.so*"
+        PATTERN "onnxruntime.dll*"
+        PATTERN "onnxruntime_providers_shared.dll*"
         PATTERN "cmake" EXCLUDE
         PATTERN "pkgconfig" EXCLUDE
 )

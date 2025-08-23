@@ -16,6 +16,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Added Windows (`x86_64`, CPU, GCC, MinGW) support.
 - Added Windows GPU support. Tested on: GCC 13.2.0 (MinGW w64), libcublas 12.9.1.4,
   libcufft 11.4.1.4, cuda_cudart 12.9.79, cudnn 9.12.0.46, cuda_nvrtc 12.9.
+- Added build options section in the readme.
+- Added the ONNX Runtime shared libraries to the install target.
 
 ### Changed
 - Changed the vscode project settings.

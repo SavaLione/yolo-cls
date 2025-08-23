@@ -63,6 +63,9 @@ The easiest way to ensure CMake can find the ONNX Runtime is to download the pre
 
 <!-- The executable `yolo-cls` (or `yolo-cls` on Windows) will be located in the `build` directory (or a subdirectory like `build/Release` depending on your generator and configuration). -->
 
+Build options:
+* `YOLOCLS_USE_CUDA` (default: `OFF`): Use Nvidia CUDA as a backend for ONNX Runtime
+
 ## Getting a Model
 This tool requires a YOLO classification model in ONNX format and a corresponding text file containing the class names.
 
