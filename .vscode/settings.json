@@ -17,12 +17,13 @@
 
     // Language Tooling (Clang)
     // Use the .clang-format file located in the root of the repository.
-    // By omitting clang-format.executable and clangd.path, we allow VS Code
-    // to find the tools on the system's PATH, which is portable across operating systems.
+    // "clangd.path": "/usr/bin/clangd-19",
+    // "clang-format.executable": "/usr/bin/clang-format-19",
     "clang-format.style": "file",
     "clangd.arguments": [
         "--pretty",
-        "--background-index"
+        "--background-index",
+        // "--query-driver=/usr/bin/clang++-19"
     ],
     
     // Spell Checking

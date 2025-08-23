@@ -13,3 +13,6 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Added the `yolo-cls` project (pre 1.0.0 version)
 - Added changelog (CHANGELOG.md)
 - Added `Platform support` section in the README.md
+
+### Changed
+- Changed the vscode project settings.
