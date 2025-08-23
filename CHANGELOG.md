@@ -13,6 +13,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Added the `yolo-cls` project (pre 1.0.0 version)
 - Added changelog (CHANGELOG.md)
 - Added `Platform support` section in the README.md
+- Added Windows (`x86_64`, CPU, GCC, MinGW) support.
 
 ### Changed
 - Changed the vscode project settings.
+- Changed the behavior of the `yolo` constructor (`src/yolo.cpp`, `yolo::yolo`).
+  Now the constructor loads the ONNX model into the memory.

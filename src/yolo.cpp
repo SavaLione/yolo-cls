@@ -121,15 +121,29 @@ yolo::yolo(std::string const &model_path, std::string const &cls_path, bool cons
  * @param[in] model_path Path to the ONNX model file.
  * @param[in] cls_path Path to the text file containing class names (one per line).
  * @throws std::invalid_argument if the model or class file cannot be loaded or is invalid.
- * @throws std::filesystem::filesystem_error if the class names file cannot be opened.
+ * @throws std::filesystem::filesystem_error if the model or class names file cannot be opened, read, or does not exist.
  */
 yolo::yolo(std::string const &model_path, std::string const &cls_path) : env(ORT_LOGGING_LEVEL_WARNING, "yolo-cls")
 {
-    // Create ONNX runtime session
+    // Read the model file into a memory buffer
+    std::ifstream model_stream(model_path, std::ios::binary | std::ios::ate);
+    if(!model_stream.is_open())
+        throw std::filesystem::filesystem_error("Could not open model file", model_path, std::make_error_code(std::errc::io_error));
+
+    std::streamsize model_size = model_stream.tellg();
+    model_stream.seekg(0, std::ios::beg);
+
+    std::vector<char> model_buffer(model_size);
+    if(!model_stream.read(model_buffer.data(), model_size))
+        throw std::filesystem::filesystem_error("Could not read model file", model_path, std::make_error_code(std::errc::io_error));
+
+    model_stream.close();
+
+    // Create ONNX runtime session from the memory buffer
     Ort::SessionOptions session_options;
     session_options.SetGraphOptimizationLevel(GraphOptimizationLevel::ORT_ENABLE_ALL);
 
-    session = Ort::Session(env, model_path.c_str(), session_options);
+    session = Ort::Session(env, model_buffer.data(), model_buffer.size(), session_options);
 
     input_nodes_num  = session.GetInputCount();
     output_nodes_num = session.GetOutputCount();

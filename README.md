@@ -22,6 +22,7 @@ The 'Status' column indicates the level of support.
 |:---------------|:-----------|:---------|:--------|:------------------------------------------------------------------|
 |Linux           |`x86_64`    |GCC 13.3.0|Supported|                                                                   |
 |Linux           |`aarch64`   |GCC 12.2.0|Supported|ONNX Runtime versions 1.22.0 and 1.21.0 didn't work, 1.20.1 worked.|
+|Windows         |`x86_64`    |GCC 13.2.0|Supported|MinGW x64                                                          |
 
 ## Building
 ### Dependencies
