@@ -33,6 +33,8 @@
 #include <filesystem>
 #include <string>
 
+#include "config.h"
+
 /**
  * @brief Default constructor.
  * @warning  It is in non-predicting state. The session is nullptr, and other members are default-initialized.
@@ -141,6 +143,13 @@ yolo::yolo(std::string const &model_path, std::string const &cls_path) : env(ORT
 
     // Create ONNX runtime session from the memory buffer
     Ort::SessionOptions session_options;
+
+#ifdef YOLOCLS_USE_CUDA
+    // Use Nvidia CUDA backend
+    OrtCUDAProviderOptions cuda_options;
+    session_options.AppendExecutionProvider_CUDA(cuda_options);
+#endif
+
     session_options.SetGraphOptimizationLevel(GraphOptimizationLevel::ORT_ENABLE_ALL);
 
     session = Ort::Session(env, model_buffer.data(), model_buffer.size(), session_options);

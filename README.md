@@ -18,11 +18,12 @@ A high-performance, multi-threaded command-line tool for YOLO-based image classi
 The project is officially tested and supported on the following platforms.
 The 'Status' column indicates the level of support.
 
-|Operating system|Architecture|Compiler  |Status   |Notes                                                              |
-|:---------------|:-----------|:---------|:--------|:------------------------------------------------------------------|
-|Linux           |`x86_64`    |GCC 13.3.0|Supported|                                                                   |
-|Linux           |`aarch64`   |GCC 12.2.0|Supported|ONNX Runtime versions 1.22.0 and 1.21.0 didn't work, 1.20.1 worked.|
-|Windows         |`x86_64`    |GCC 13.2.0|Supported|MinGW x64                                                          |
+|Operating system|Architecture|Device|Compiler  |Status    |Notes                                                              |
+|:---------------|:-----------|:-----|:---------|:---------|:------------------------------------------------------------------|
+|Linux           |`x86_64`    |CPU   |GCC 13.3.0|Supported |                                                                   |
+|Linux           |`aarch64`   |CPU   |GCC 12.2.0|Supported |ONNX Runtime versions 1.22.0 and 1.21.0 didn't work, 1.20.1 worked.|
+|Windows         |`x86_64`    |CPU   |GCC 13.2.0|Supported |MinGW x64                                                          |
+|Windows         |`x86_64`    |GPU   |GCC 13.2.0|Supported |MinGW x64, Nvidia CUDA (libcublas 12.9.1.4, libcufft 11.4.1.4, cuda_cudart 12.9.79, cudnn 9.12.0.46, cuda_nvrtc 12.9.86)|
 
 ## Building
 ### Dependencies
@@ -46,6 +47,8 @@ The easiest way to ensure CMake can find the ONNX Runtime is to download the pre
     - (x86_64, Linux, CPU): `wget https://github.com/microsoft/onnxruntime/releases/download/v1.22.0/onnxruntime-linux-x64-1.22.0.tgz`
     - (x86_64, Linux, GPU): `wget https://github.com/microsoft/onnxruntime/releases/download/v1.22.0/onnxruntime-linux-x64-gpu-1.22.0.tgz`
     - (aarch64, Linux, CPU): `wget https://github.com/microsoft/onnxruntime/releases/download/v1.20.1/onnxruntime-linux-aarch64-1.20.1.tgz`
+    - (x86_64, Windows, CPU): `wget https://github.com/microsoft/onnxruntime/releases/download/v1.22.1/onnxruntime-win-x64-1.22.1.zip`
+    - (x86_64, Windows, GPU): `wget https://github.com/microsoft/onnxruntime/releases/download/v1.22.1/onnxruntime-win-x64-gpu-1.22.1.zip`
 4. Unpack the archive: `tar -xvzf onnxruntime-linux-*.tgz`
 5. The ONNX Runtime has been installed. Don't forget to let CMake find the installed library:
     - `-DCMAKE_PREFIX_PATH=~/lib/onnxruntime-linux-x64-1.22.0/`

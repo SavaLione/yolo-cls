@@ -70,4 +70,11 @@
 */
 #define PROJECT_LICENSE "${PROJECT_LICENSE}"
 
+/* Project settings */
+
+/**
+ * @brief Defines a macro whether to use Nvidia CUDA or not.
+*/
+#cmakedefine YOLOCLS_USE_CUDA
+
 #endif // CONFIG_H

@@ -39,6 +39,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(BUILD_SHARED_LIBS OFF)
 
+# The project options
+option(YOLOCLS_USE_CUDA "Use Nvidia CUDA backend" OFF)
+
 # Provide compile commands for tools like clangd
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
