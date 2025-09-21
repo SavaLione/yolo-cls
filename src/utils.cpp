@@ -204,10 +204,10 @@ configuration parse_arguments(int argc, char **argv)
     configuration result;
 
     // Accepted parameters
-    std::string const short_opts = "m:c:k:t:TSF:Dhva";
+    std::string const short_opts = "m:c:k:t:TSF:Dhvaj";
 
     // clang-format off
-    std::array<xoption, 12> long_options =
+    std::array<xoption, 13> long_options =
         {{
             {"model",               xrequired_argument, nullptr, 'm'},
             {"classes",             xrequired_argument, nullptr, 'c'},
@@ -220,6 +220,7 @@ configuration parse_arguments(int argc, char **argv)
             {"help",                xno_argument,       nullptr, 'h'},
             {"version",             xno_argument,       nullptr, 'v'},
             {"about",               xno_argument,       nullptr, 'a'},
+            {"jsonl",               xno_argument,       nullptr, 'j'},
             {0, 0, 0, 0} // Sentinel
         }};
     // clang-format on
@@ -245,6 +246,7 @@ configuration parse_arguments(int argc, char **argv)
             case 'h': print_help(); exit(EXIT_SUCCESS); break;
             case 'v': std::cout << PROJECT_VERSION << std::endl; exit(EXIT_SUCCESS); break;
             case 'a': print_about(); exit(EXIT_SUCCESS); break;
+            case 'j': result.use_jsonl = true; break;
             default: throw std::runtime_error("could not parse parameters, use --help for usage.");
         }
         // clang-format on
@@ -301,27 +303,52 @@ void thread_classify(tsqueue &tsq_in, tsqueue &tsq_out, yolo &model, configurati
             // Run the model and classify the image
             auto cls = model.predict(image, c.top_k);
 
+            // Time of the image being loaded, resized and classified
+            auto end      = std::chrono::high_resolution_clock::now();
+            auto duration = end - start_timer;
+
             // Format result
-            std::string result = path;
+            std::string result = "";
 
-            if(c.enable_timing)
+            if(c.use_jsonl)
             {
-                // Time of the image being loaded, resized and classified
-                auto end      = std::chrono::high_resolution_clock::now();
-                auto duration = end - start_timer;
+                result += "{\"path\": \"" + path + "\"";
 
-                result += ", " + std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(duration).count()) + "ms";
-            }
+                if(c.enable_timing)
+                {
+                    result += ", \"time\": " + std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(duration).count());
+                }
 
-            if(c.top_k != 0)
-                result += ", ";
+                if(c.top_k != 0)
+                {
+                    result += ", \"predictions\": [";
+                    for(auto it = cls.begin(); it != cls.end(); ++it)
+                    {
+                        result += "{ \"class_name\": \"" + it->class_name + "\", \"confidence\": " + std::to_string(it->confidence) + "}";
 
-            for(auto it = cls.begin(); it != cls.end(); ++it)
-            {
-                result += it->class_name + " " + std::to_string(it->confidence);
+                        if(std::next(it) != cls.end())
+                            result += ",";
+                    }
+                    result += "]";
+                }
 
-                if(std::next(it) != cls.end())
+                result += "}";
+            } else {
+                result = path;
+
+                if(c.enable_timing)
+                    result += ", " + std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(duration).count()) + "ms";
+
+                if(c.top_k != 0)
                     result += ", ";
+
+                for(auto it = cls.begin(); it != cls.end(); ++it)
+                {
+                    result += it->class_name + " " + std::to_string(it->confidence);
+
+                    if(std::next(it) != cls.end())
+                        result += ", ";
+                }
             }
 
             tsq_out.push(result);
@@ -329,7 +356,14 @@ void thread_classify(tsqueue &tsq_in, tsqueue &tsq_out, yolo &model, configurati
         catch(const std::exception &e)
         {
             std::stringstream ss;
-            ss << "yolo-cls: could not process the file \'" << *value << "\': " << e.what() << std::endl;
+
+            if(c.use_jsonl)
+            {
+                ss << "{\"path\": \"" << *value << "\", \"error\": \"" << e.what() << "\"}" << std::endl;
+            } else {
+                ss << "yolo-cls: could not process the file \'" << *value << "\': " << e.what() << std::endl;
+            }
+
             std::cerr << ss.str();
         }
     }
@@ -400,6 +434,7 @@ Options:
   -h, --help                     Print this help message and exit.
   -v, --version                  Print version information and exit.
   -a, --about                    Print about information and exit.
+  -j, --jsonl                    Format output as JSON Lines.
 
 Examples:
   yolo-cls -m ./yolo11x-cls.onnx -c ./imagenet.names ./fox.png

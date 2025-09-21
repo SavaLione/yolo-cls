@@ -13,6 +13,7 @@ A high-performance, multi-threaded command-line tool for YOLO-based image classi
 * Softmax Option: Optionally apply a softmax function to convert raw output scores into probabilities.
 * Performance Timing: Measure and display the processing time for each image.
 * Input Filtering: Filter input by file extension and maximum file size.
+* JSONL Output: Optionally print results as JSON Lines (`-j`, `--jsonl`).
 
 ## Platform support
 The project is officially tested and supported on the following platforms.
@@ -95,6 +96,7 @@ Options:
 |-h|--help               |      |Print this help message and exit.                          |                        |
 |-v|--version            |      |Print version information and exit.                        |                        |
 |-a|--about              |      |Print about information and exit.                          |                        |
+|-j|--jsonl              |      |Format output as JSON Lines.                               |                        |
 
 ### Examples:
 Classify all images in a directory using `find`:
@@ -120,8 +122,6 @@ Classify multiple images from arguments with timing info:
 ```bash
 ./yolo-cls -m model.onnx -c classes.txt -T ./img1.jpg ./img2.png ./img3.webp
 ```
-
-
 
 ## Contributing
 Contributions are welcome!

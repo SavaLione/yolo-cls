@@ -23,7 +23,7 @@ cmake_minimum_required (VERSION 3.20)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 project(yolo-cls
-    VERSION "1.0.0"
+    VERSION "1.0.1"
     DESCRIPTION "yolo-cls is command-line tool for YOLO-based image classification."
     HOMEPAGE_URL "https://github.com/SavaLione/yolo-cls"
     LANGUAGES C CXX

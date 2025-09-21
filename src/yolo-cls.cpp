@@ -47,11 +47,25 @@ int main(int argc, char **argv)
     try
     {
         config = parse_arguments(argc, argv);
+
+        // Check if the required parameters were set
+        if(config.model_path == "")
+            throw std::runtime_error("the model path can't be empty.");
+
+        if(config.classes_path == "")
+            throw std::runtime_error("the classes path can't be empty.");
     }
     catch(std::exception const &e)
     {
         std::stringstream ss;
-        ss << "yolo-cls: " << e.what() << std::endl;
+
+        if(config.use_jsonl)
+        {
+            ss << "{\"error\": \"" << e.what() << "\"}" << std::endl;
+        } else {
+            ss << "yolo-cls: " << e.what() << std::endl;
+        }
+
         std::cerr << ss.str();
 
         return EXIT_FAILURE;
@@ -68,7 +82,14 @@ int main(int argc, char **argv)
     catch(std::exception const &e)
     {
         std::stringstream ss;
-        ss << "yolo-cls: " << e.what() << std::endl;
+
+        if(config.use_jsonl)
+        {
+            ss << "{\"error\": \"" << e.what() << "\"}" << std::endl;
+        } else {
+            ss << "yolo-cls: " << e.what() << std::endl;
+        }
+
         std::cerr << ss.str();
 
         return EXIT_FAILURE;

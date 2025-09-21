@@ -66,6 +66,7 @@ struct configuration
     uint64_t max_filesize        = string_unit_to_numeric("100mb");     ///< Maximum allowed image file size in bytes.
     bool disable_extension_check = false;                               ///< If true, do not check file extensions.
     std::vector<std::string> image_files;                               ///< List of image files from command-line arguments.
+    bool use_jsonl               = false;                               ///< If true, format output as JSON Lines.
 };
 
 /**
