@@ -204,10 +204,10 @@ configuration parse_arguments(int argc, char **argv)
     configuration result;
 
     // Accepted parameters
-    std::string const short_opts = "m:c:k:t:TSF:Dhva";
+    std::string const short_opts = "m:c:k:t:TSjF:Dhva";
 
     // clang-format off
-    std::array<xoption, 12> long_options =
+    std::array<xoption, 13> long_options =
         {{
             {"model",               xrequired_argument, nullptr, 'm'},
             {"classes",             xrequired_argument, nullptr, 'c'},
@@ -215,6 +215,7 @@ configuration parse_arguments(int argc, char **argv)
             {"threads",             xrequired_argument, nullptr, 't'},
             {"timing",              xno_argument,       nullptr, 'T'},
             {"softmax",             xno_argument,       nullptr, 'S'},
+            {"jsonl",               xno_argument,       nullptr, 'j'},
             {"max-filesize",        xrequired_argument, nullptr, 'F'},
             {"no-extension-check",  xno_argument,       nullptr, 'D'},
             {"help",                xno_argument,       nullptr, 'h'},
@@ -240,6 +241,7 @@ configuration parse_arguments(int argc, char **argv)
             case 't': result.threads = std::stoi(xoptarg); break;
             case 'T': result.enable_timing = true; break;
             case 'S': result.use_softmax = true; break;
+            case 'j': result.use_jsonl = true; break;
             case 'F': result.max_filesize = string_unit_to_numeric(xoptarg); break;
             case 'D': result.disable_extension_check = true; break;
             case 'h': print_help(); exit(EXIT_SUCCESS); break;
@@ -301,27 +303,54 @@ void thread_classify(tsqueue &tsq_in, tsqueue &tsq_out, yolo &model, configurati
             // Run the model and classify the image
             auto cls = model.predict(image, c.top_k);
 
+            // Time of the image being loaded, resized and classified
+            auto end      = std::chrono::high_resolution_clock::now();
+            auto duration = end - start_timer;
+
             // Format result
-            std::string result = path;
+            std::string result = "";
 
-            if(c.enable_timing)
+            if(c.use_jsonl)
             {
-                // Time of the image being loaded, resized and classified
-                auto end      = std::chrono::high_resolution_clock::now();
-                auto duration = end - start_timer;
+                result += "{\"path\": \"" + path + "\"";
 
-                result += ", " + std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(duration).count()) + "ms";
+                if(c.enable_timing)
+                {
+                    result += ", \"time\": " + std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(duration).count());
+                }
+
+                if(c.top_k != 0)
+                {
+                    result += ", \"predictions\": [";
+                    for(auto it = cls.begin(); it != cls.end(); ++it)
+                    {
+                        result += "{ \"class_name\": \"" + it->class_name + "\", \"confidence\": " + std::to_string(it->confidence) + "}";
+
+                        if(std::next(it) != cls.end())
+                            result += ",";
+                    }
+                    result += "]";
+                }
+
+                result += "}";
             }
-
-            if(c.top_k != 0)
-                result += ", ";
-
-            for(auto it = cls.begin(); it != cls.end(); ++it)
+            else
             {
-                result += it->class_name + " " + std::to_string(it->confidence);
+                result = path;
 
-                if(std::next(it) != cls.end())
+                if(c.enable_timing)
+                    result += ", " + std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(duration).count()) + "ms";
+
+                if(c.top_k != 0)
                     result += ", ";
+
+                for(auto it = cls.begin(); it != cls.end(); ++it)
+                {
+                    result += it->class_name + " " + std::to_string(it->confidence);
+
+                    if(std::next(it) != cls.end())
+                        result += ", ";
+                }
             }
 
             tsq_out.push(result);
@@ -329,7 +358,16 @@ void thread_classify(tsqueue &tsq_in, tsqueue &tsq_out, yolo &model, configurati
         catch(const std::exception &e)
         {
             std::stringstream ss;
-            ss << "yolo-cls: could not process the file \'" << *value << "\': " << e.what() << std::endl;
+
+            if(c.use_jsonl)
+            {
+                ss << "{\"path\": \"" << *value << "\", \"error\": \"" << e.what() << "\"}" << std::endl;
+            }
+            else
+            {
+                ss << "yolo-cls: could not process the file \'" << *value << "\': " << e.what() << std::endl;
+            }
+
             std::cerr << ss.str();
         }
     }
@@ -396,6 +434,7 @@ Options:
   -F, --max-filesize <size>      Maximum allowed filesize for images (e.g., 100mb, 2g). [default: 100mb]
   -T, --timing                   Enable printing processing time for each image.
   -S, --softmax                  Apply softmax to the output scores.
+  -j, --jsonl                    Format output as JSON Lines.
   -D, --no-extension-check       Disable image file extension check (e.g., .jpg, .png).
   -h, --help                     Print this help message and exit.
   -v, --version                  Print version information and exit.
