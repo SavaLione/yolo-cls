@@ -63,10 +63,10 @@ struct configuration
     unsigned int threads         = std::thread::hardware_concurrency(); ///< Number of worker threads.
     bool enable_timing           = false;                               ///< If true, include processing time in the output.
     bool use_softmax             = false;                               ///< If true, apply softmax to model output.
+    bool use_jsonl               = false;                               ///< If true, format output as JSON Lines.
     uint64_t max_filesize        = string_unit_to_numeric("100mb");     ///< Maximum allowed image file size in bytes.
     bool disable_extension_check = false;                               ///< If true, do not check file extensions.
     std::vector<std::string> image_files;                               ///< List of image files from command-line arguments.
-    bool use_jsonl               = false;                               ///< If true, format output as JSON Lines.
 };
 
 /**

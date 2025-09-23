@@ -92,11 +92,11 @@ Options:
 |-F|--max-filesize       |<size>|Maximum allowed filesize for images (e.g., 100mb, 2g).     |100mb                   |
 |-T|--timing             |      |Enable printing processing time for each image.            |Disabled                |
 |-S|--softmax            |      |Apply softmax to the output scores.                        |Disabled                |
+|-j|--jsonl              |      |Format output as JSON Lines.                               |Disabled                |
 |-D|--no-extension-check |      |Disable image file extension check (e.g., .jpg, .png).     |Disabled                |
 |-h|--help               |      |Print this help message and exit.                          |                        |
 |-v|--version            |      |Print version information and exit.                        |                        |
 |-a|--about              |      |Print about information and exit.                          |                        |
-|-j|--jsonl              |      |Format output as JSON Lines.                               |                        |
 
 ### Examples:
 Classify all images in a directory using `find`:

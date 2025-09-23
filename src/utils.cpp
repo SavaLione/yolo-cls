@@ -204,7 +204,7 @@ configuration parse_arguments(int argc, char **argv)
     configuration result;
 
     // Accepted parameters
-    std::string const short_opts = "m:c:k:t:TSF:Dhvaj";
+    std::string const short_opts = "m:c:k:t:TSjF:Dhva";
 
     // clang-format off
     std::array<xoption, 13> long_options =
@@ -215,12 +215,12 @@ configuration parse_arguments(int argc, char **argv)
             {"threads",             xrequired_argument, nullptr, 't'},
             {"timing",              xno_argument,       nullptr, 'T'},
             {"softmax",             xno_argument,       nullptr, 'S'},
+            {"jsonl",               xno_argument,       nullptr, 'j'},
             {"max-filesize",        xrequired_argument, nullptr, 'F'},
             {"no-extension-check",  xno_argument,       nullptr, 'D'},
             {"help",                xno_argument,       nullptr, 'h'},
             {"version",             xno_argument,       nullptr, 'v'},
             {"about",               xno_argument,       nullptr, 'a'},
-            {"jsonl",               xno_argument,       nullptr, 'j'},
             {0, 0, 0, 0} // Sentinel
         }};
     // clang-format on
@@ -241,12 +241,12 @@ configuration parse_arguments(int argc, char **argv)
             case 't': result.threads = std::stoi(xoptarg); break;
             case 'T': result.enable_timing = true; break;
             case 'S': result.use_softmax = true; break;
+            case 'j': result.use_jsonl = true; break;
             case 'F': result.max_filesize = string_unit_to_numeric(xoptarg); break;
             case 'D': result.disable_extension_check = true; break;
             case 'h': print_help(); exit(EXIT_SUCCESS); break;
             case 'v': std::cout << PROJECT_VERSION << std::endl; exit(EXIT_SUCCESS); break;
             case 'a': print_about(); exit(EXIT_SUCCESS); break;
-            case 'j': result.use_jsonl = true; break;
             default: throw std::runtime_error("could not parse parameters, use --help for usage.");
         }
         // clang-format on
@@ -333,7 +333,9 @@ void thread_classify(tsqueue &tsq_in, tsqueue &tsq_out, yolo &model, configurati
                 }
 
                 result += "}";
-            } else {
+            }
+            else
+            {
                 result = path;
 
                 if(c.enable_timing)
@@ -360,7 +362,9 @@ void thread_classify(tsqueue &tsq_in, tsqueue &tsq_out, yolo &model, configurati
             if(c.use_jsonl)
             {
                 ss << "{\"path\": \"" << *value << "\", \"error\": \"" << e.what() << "\"}" << std::endl;
-            } else {
+            }
+            else
+            {
                 ss << "yolo-cls: could not process the file \'" << *value << "\': " << e.what() << std::endl;
             }
 
@@ -430,11 +434,11 @@ Options:
   -F, --max-filesize <size>      Maximum allowed filesize for images (e.g., 100mb, 2g). [default: 100mb]
   -T, --timing                   Enable printing processing time for each image.
   -S, --softmax                  Apply softmax to the output scores.
+  -j, --jsonl                    Format output as JSON Lines.
   -D, --no-extension-check       Disable image file extension check (e.g., .jpg, .png).
   -h, --help                     Print this help message and exit.
   -v, --version                  Print version information and exit.
   -a, --about                    Print about information and exit.
-  -j, --jsonl                    Format output as JSON Lines.
 
 Examples:
   yolo-cls -m ./yolo11x-cls.onnx -c ./imagenet.names ./fox.png

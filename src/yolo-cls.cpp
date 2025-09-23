@@ -62,7 +62,9 @@ int main(int argc, char **argv)
         if(config.use_jsonl)
         {
             ss << "{\"error\": \"" << e.what() << "\"}" << std::endl;
-        } else {
+        }
+        else
+        {
             ss << "yolo-cls: " << e.what() << std::endl;
         }
 
@@ -86,7 +88,9 @@ int main(int argc, char **argv)
         if(config.use_jsonl)
         {
             ss << "{\"error\": \"" << e.what() << "\"}" << std::endl;
-        } else {
+        }
+        else
+        {
             ss << "yolo-cls: " << e.what() << std::endl;
         }
 
