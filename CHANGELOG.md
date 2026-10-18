@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [Unreleased]
 ### Fixed
 - Fixed formatting and the new flag position.
+- Updated copyrights (see #3)
 
 ### Added
 - Added ability to output results as JSON Lines (`-j`, `--jsonl`).

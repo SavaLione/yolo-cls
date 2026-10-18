@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 /*
- * Copyright (C) 2025 Savelii Pototskii (savalione.com)
+ * Copyright (C) 2025-2026 Savelii Pototskii (savalione.com)
  *
  * Author: Savelii Pototskii <savelii.pototskii@gmail.com>
  *
@@ -31,7 +31,7 @@
  *
  * @author Savelii Pototskii
  * @date 2025-08-17
- * @copyright Copyright (C) 2025 Savelii Pototskii (savalione.com)
+ * @copyright Copyright (C) 2025-2026 Savelii Pototskii (savalione.com)
  * @copyright SPDX-License-Identifier: GPL-3.0-or-later
 */
 #include <unistd.h> // For unix pipe

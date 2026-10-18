@@ -1,5 +1,5 @@
 #######################################################################
-# Copyright (C) 2025 Savelii Pototskii (savalione.com)
+# Copyright (C) 2025-2026 Savelii Pototskii (savalione.com)
 # 
 # Author: Savelii Pototskii <savelii.pototskii@gmail.com>
 # 

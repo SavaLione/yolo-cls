@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 /*
- * Copyright (C) 2025 Savelii Pototskii (savalione.com)
+ * Copyright (C) 2025-2026 Savelii Pototskii (savalione.com)
  *
  * Author: Savelii Pototskii <savelii.pototskii@gmail.com>
  *
@@ -24,7 +24,7 @@
  * @brief Declares utility functions for argument parsing, string conversion, file type checking, and the functions that run in separate threads.
  * @author Savelii Pototskii
  * @date 2025-08-17
- * @copyright Copyright (C) 2025 Savelii Pototskii (savalione.com)
+ * @copyright Copyright (C) 2025-2026 Savelii Pototskii (savalione.com)
  * @copyright SPDX-License-Identifier: GPL-3.0-or-later
 */
 #ifndef UTILS_H
