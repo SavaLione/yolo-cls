@@ -144,7 +144,7 @@ The output will be generated in the `docs/documentation` directory.
 This project is licensed under [The GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html).
 See the [LICENSE](LICENSE) file for the full license text.
 
-Copyright (C) 2025 Savelii Pototskii (savalione.com)
+Copyright (C) 2025-2026 Savelii Pototskii (savalione.com)
 
 ### Third-Party Libraries
 This project incorporates code from several third-party libraries.
